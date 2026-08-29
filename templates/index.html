@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR-kode generator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>QR-kode generator</h1>
+    <p class="subtitle">Lim inn en lenke, trykk generer, last ned.</p>
+
+    <form id="qr-form">
+      <input
+        type="text"
+        id="data"
+        name="data"
+        placeholder="https://eksempel.no"
+        autocomplete="off"
+        required
+      >
+
+      <label for="ec">Feilkorrigering</label>
+      <select id="ec" name="ec">
+        <option value="L">Lav (~7%)</option>
+        <option value="M" selected>Middels (~15%)</option>
+        <option value="Q">Høy (~25%)</option>
+        <option value="H">Veldig høy (~30%)</option>
+      </select>
+
+      <button type="submit">Generer QR-kode</button>
+    </form>
+
+    <p id="error" class="error" hidden></p>
+
+    <div id="result" hidden>
+      <img id="qr-image" alt="Generert QR-kode">
+      <a id="download-link" download="qr-kode.png">Last ned PNG</a>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('qr-form');
+    const result = document.getElementById('result');
+    const image = document.getElementById('qr-image');
+    const downloadLink = document.getElementById('download-link');
+    const errorBox = document.getElementById('error');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const data = document.getElementById('data').value.trim();
+      const ec = document.getElementById('ec').value;
+      errorBox.hidden = true;
+
+      if (!data) return;
+
+      const url = `/generate?data=${encodeURIComponent(data)}&ec=${encodeURIComponent(ec)}`;
+      image.src = url;
+      downloadLink.href = url;
+      result.hidden = false;
+    });
+
+    image.addEventListener('error', () => {
+      result.hidden = true;
+      errorBox.textContent = 'Klarte ikke å generere QR-koden. Sjekk at teksten ikke er for lang.';
+      errorBox.hidden = false;
+    });
+  </script>
+</body>
+</html>
