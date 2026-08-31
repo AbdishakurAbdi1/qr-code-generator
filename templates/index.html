@@ -1,72 +1,132 @@
 <!doctype html>
 <html lang="no">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QR-kode generator</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <main>
-    <h1>QR-kode generator</h1>
-    <p class="subtitle">Lim inn en lenke, trykk generer, last ned.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QR Studio: gratis QR-kode generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800;900&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="topnav">
+      <span class="brand">QR&nbsp;STUDIO</span>
+    </nav>
 
-    <form id="qr-form">
-      <input
-        type="text"
-        id="data"
-        name="data"
-        placeholder="https://eksempel.no"
-        autocomplete="off"
-        required
-      >
+    <header class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">GRATIS · INGEN UTLØPSDATO</p>
+        <h1>LAG DIN<br />QR&#8209;KODE</h1>
 
-      <label for="ec">Feilkorrigering</label>
-      <select id="ec" name="ec">
-        <option value="L">Lav (~7%)</option>
-        <option value="M" selected>Middels (~15%)</option>
-        <option value="Q">Høy (~25%)</option>
-        <option value="H">Veldig høy (~30%)</option>
-      </select>
+        <form id="qr-form" class="hero-form">
+          <input
+            type="text"
+            id="data"
+            name="data"
+            placeholder="https://eksempel.no"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="pill-btn pill-btn--solid">
+            GENERER
+          </button>
+        </form>
 
-      <button type="submit">Generer QR-kode</button>
-    </form>
+        <div class="form-row">
+          <label for="ec">Feilkorrigering</label>
+          <select id="ec" name="ec">
+            <option value="L">Lav (~7%)</option>
+            <option value="M" selected>Middels (~15%)</option>
+            <option value="Q">Høy (~25%)</option>
+            <option value="H">Veldig høy (~30%)</option>
+          </select>
+        </div>
 
-    <p id="error" class="error" hidden></p>
+        <p id="error" class="error" hidden></p>
+      </div>
 
-    <div id="result" hidden>
-      <img id="qr-image" alt="Generert QR-kode">
-      <a id="download-link" download="qr-kode.png">Last ned PNG</a>
-    </div>
-  </main>
+      <div class="hero-visual">
+        <div class="blob blob--back" aria-hidden="true"></div>
+        <div class="blob blob--front">
+          <div class="qr-stage" id="qr-stage">
+            <div class="qr-placeholder" id="qr-placeholder" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <img id="qr-image" alt="Generert QR-kode" hidden />
+          </div>
+          <a
+            id="download-link"
+            class="pill-btn pill-btn--outline"
+            download="qr-kode.png"
+            hidden
+            >LAST NED PNG</a
+          >
+        </div>
+      </div>
+    </header>
 
-  <script>
-    const form = document.getElementById('qr-form');
-    const result = document.getElementById('result');
-    const image = document.getElementById('qr-image');
-    const downloadLink = document.getElementById('download-link');
-    const errorBox = document.getElementById('error');
+    <section class="about" id="om">
+      <p class="eyebrow">OM TJENESTEN</p>
+      <p class="about-text">
+        QR Studio ble laget av en student som ble drit lei av QR-generator sider
+        som koster penger og som slutter å virke etter kort tid. Her kodes
+        lenken direkte inn i selve mønsteret og dermed ingen omadressering,
+        sporing og tredjepartstjeneste som kan legges ned. Koden vil alltid
+        scanne til akkurat samme lenke.
+      </p>
+    </section>
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+    <footer class="site-footer">
+      <p>&copy; 2026 Abdishakur Abdi</p>
+    </footer>
 
-      const data = document.getElementById('data').value.trim();
-      const ec = document.getElementById('ec').value;
-      errorBox.hidden = true;
+    <script>
+      const form = document.getElementById("qr-form");
+      const stage = document.getElementById("qr-stage");
+      const placeholder = document.getElementById("qr-placeholder");
+      const image = document.getElementById("qr-image");
+      const downloadLink = document.getElementById("download-link");
+      const errorBox = document.getElementById("error");
 
-      if (!data) return;
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-      const url = `/generate?data=${encodeURIComponent(data)}&ec=${encodeURIComponent(ec)}`;
-      image.src = url;
-      downloadLink.href = url;
-      result.hidden = false;
-    });
+        const data = document.getElementById("data").value.trim();
+        const ec = document.getElementById("ec").value;
+        errorBox.hidden = true;
 
-    image.addEventListener('error', () => {
-      result.hidden = true;
-      errorBox.textContent = 'Klarte ikke å generere QR-koden. Sjekk at teksten ikke er for lang.';
-      errorBox.hidden = false;
-    });
-  </script>
-</body>
+        if (!data) return;
+
+        const url = `/generate?data=${encodeURIComponent(data)}&ec=${encodeURIComponent(ec)}`;
+        image.src = url;
+        downloadLink.href = url;
+      });
+
+      image.addEventListener("load", () => {
+        placeholder.hidden = true;
+        image.hidden = false;
+        downloadLink.hidden = false;
+      });
+
+      image.addEventListener("error", () => {
+        placeholder.hidden = false;
+        image.hidden = true;
+        downloadLink.hidden = true;
+        errorBox.textContent =
+          "Klarte ikke å generere QR-koden. Sjekk at teksten ikke er for lang.";
+        errorBox.hidden = false;
+      });
+    </script>
+  </body>
 </html>
