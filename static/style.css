@@ -286,6 +286,25 @@ select:focus {
 
 .site-footer p {
   margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ---------- responsive ---------- */
@@ -297,5 +316,9 @@ select:focus {
 
   .hero-form .pill-btn {
     width: 100%;
+  }
+
+  .hero-visual {
+    margin-top: 1.25rem;
   }
 }
