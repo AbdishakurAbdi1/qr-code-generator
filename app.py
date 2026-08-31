@@ -1,4 +1,5 @@
 import io
+import os
 
 import qrcode
 import qrcode.constants
@@ -49,4 +50,8 @@ def generate():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Sett FLASK_DEBUG=1 lokalt for auto-reload og feilsøkingsvisning.
+    # Skal ALDRI stå på i produksjon (PythonAnywhere bruker uansett WSGI,
+    # så denne blokken kjøres ikke der, men holder vanen trygg).
+    debug_mode = os.environ.get('FLASK_DEBUG') == '1'
+    app.run(debug=debug_mode)
