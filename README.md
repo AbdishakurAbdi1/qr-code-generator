@@ -1,6 +1,6 @@
 # QR-kode generator
 
-Enkel nettside for å generere QR-koder fra en lenke. Flask-backend + [`qrcode`](https://pypi.org/project/qrcode/)-biblioteket.
+Utviklet en nettside for å generere QR-koder fra en lenke. Flask-backend + [`qrcode`](https://pypi.org/project/qrcode/)-biblioteket.
 
 ## Kjøre lokalt
 
