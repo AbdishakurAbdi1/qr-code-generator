@@ -1,12 +1,14 @@
 :root {
   color-scheme: light;
-  --cream: #f6ecda;
-  --ink: #1f3a2b;
-  --ink-soft: #45604f;
-  --lavender: #b6a4ee;
-  --lime: #dbe45f;
-  --card: #fffdf8;
-  --border: rgba(31, 58, 43, 0.15);
+  --purple: #d5c5e3;
+  --purple-light: #e9e0f1;
+  --ink: #1e2b24;
+  --ink-soft: rgba(30, 43, 36, 0.7);
+  --cream: #fbf8e9;
+  --mint: #77aa85;
+  --darkgreen: #1e2b24;
+  --card: #fbf8e9;
+  --border: rgba(30, 43, 36, 0.2);
   --error: #b3261e;
 }
 
@@ -16,9 +18,14 @@
 
 body {
   margin: 0;
-  background: var(--cream);
+  background: var(--purple);
   color: var(--ink);
-  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Space Grotesk",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 /* ---------- nav ---------- */
@@ -30,7 +37,7 @@ body {
 }
 
 .brand {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: 0.04em;
@@ -51,7 +58,10 @@ body {
   text-decoration: none;
   border: 1.5px solid var(--ink);
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
   white-space: nowrap;
 }
 
@@ -61,12 +71,12 @@ body {
 
 .pill-btn--solid {
   background: var(--ink);
-  color: var(--cream);
+  color: var(--purple);
   border-color: var(--ink);
 }
 
 .pill-btn--solid:hover {
-  background: #2c4a38;
+  background: #2f4238;
 }
 
 .pill-btn--outline {
@@ -80,7 +90,8 @@ body {
   display: flex;
   align-items: center;
   gap: clamp(1.5rem, 5vw, 4rem);
-  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 5vw, 4rem)
+    clamp(3rem, 6vw, 5rem);
   max-width: 1200px;
   margin: 0 auto;
   flex-wrap: wrap;
@@ -100,7 +111,7 @@ body {
 }
 
 .hero-text h1 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-weight: 900;
   font-size: clamp(2.75rem, 7vw, 5rem);
   line-height: 0.98;
@@ -132,7 +143,7 @@ body {
 
 .hero-form input:focus,
 select:focus {
-  outline: 2px solid var(--lavender);
+  outline: 2px solid var(--cream);
   outline-offset: 2px;
 }
 
@@ -149,8 +160,10 @@ select:focus {
   font-size: 0.8rem;
   padding: 0.4rem 1.9rem 0.4rem 0.8rem;
   border-radius: 999px;
-  border: 1.5px solid var(--border);
-  background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5' fill='none' stroke='%231f3a2b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+  border: 1.5px solid var(--ink);
+  background: var(--card)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5' fill='none' stroke='%231e2b24' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat right 0.75rem center;
   background-size: 10px;
   color: var(--ink);
   appearance: none;
@@ -182,13 +195,13 @@ select:focus {
 }
 
 .blob--back {
-  background: var(--lime);
+  background: var(--darkgreen);
   border-radius: 38% 62% 58% 42% / 46% 40% 60% 54%;
   transform: translate(6%, 8%) rotate(6deg);
 }
 
 .blob--front {
-  background: var(--lavender);
+  background: var(--mint);
   border-radius: 62% 38% 42% 58% / 54% 60% 40% 46%;
   transform: rotate(-3deg);
   display: flex;
@@ -208,7 +221,7 @@ select:focus {
   align-items: center;
   justify-content: center;
   padding: 10%;
-  box-shadow: 0 12px 30px rgba(31, 58, 43, 0.18);
+  box-shadow: 0 12px 30px rgba(30, 43, 36, 0.18);
   transform: rotate(3deg);
 }
 
@@ -227,7 +240,7 @@ select:focus {
 }
 
 .qr-placeholder span {
-  background: var(--border);
+  background: var(--purple-light);
   border-radius: 3px;
 }
 
@@ -247,7 +260,6 @@ select:focus {
 .qr-placeholder span:nth-child(15),
 .qr-placeholder span:nth-child(17) {
   background: var(--ink);
-  opacity: 0.85;
 }
 
 /* ---------- about ---------- */
@@ -269,7 +281,7 @@ select:focus {
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 0;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
 /* ---------- footer ---------- */
