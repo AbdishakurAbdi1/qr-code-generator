@@ -32,6 +32,7 @@
             name="data"
             placeholder="https://eksempel.no"
             autocomplete="off"
+            maxlength="20"
             required
           />
           <button type="submit" class="pill-btn pill-btn--solid">
@@ -79,7 +80,7 @@
     <section class="about" id="om">
       <p class="eyebrow">OM TJENESTEN</p>
       <p class="about-text">
-        QR Studio ble laget av en student som ble drit lei av QR-generator sider
+        QR Studio ble laget av en student som ble lei av QR-generator sider
         som koster penger og som slutter å virke etter kort tid. Her kodes
         lenken direkte inn i selve mønsteret og dermed ingen omadressering,
         sporing eller tredjepartstjeneste som kan legges ned. Koden vil alltid
@@ -109,6 +110,32 @@
       const image = document.getElementById("qr-image");
       const downloadLink = document.getElementById("download-link");
       const errorBox = document.getElementById("error");
+      const MAX_LENGTH = 20;
+      const ALLOWED_TLDS = [
+        "no", "com", "org", "net", "edu", "gov", "io", "eu",
+        "se", "dk", "fi", "uk", "de", "info", "app", "dev", "co",
+      ];
+
+      function isWebsite(data) {
+        const candidate = data.includes("://") ? data : "http://" + data;
+        let parsed;
+        try {
+          parsed = new URL(candidate);
+        } catch {
+          return false;
+        }
+        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+          return false;
+        }
+        const host = parsed.hostname.toLowerCase();
+        const dot = host.lastIndexOf(".");
+        return dot > 0 && ALLOWED_TLDS.includes(host.slice(dot + 1));
+      }
+
+      function showError(message) {
+        errorBox.textContent = message;
+        errorBox.hidden = false;
+      }
 
       form.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -118,6 +145,16 @@
         errorBox.hidden = true;
 
         if (!data) return;
+
+        if (data.length > MAX_LENGTH) {
+          showError(`Maks ${MAX_LENGTH} tegn.`);
+          return;
+        }
+
+        if (!isWebsite(data)) {
+          showError("Skriv inn en nettadresse, f.eks. eksempel.no eller eksempel.com.");
+          return;
+        }
 
         const url = `/generate?data=${encodeURIComponent(data)}&ec=${encodeURIComponent(ec)}`;
         image.src = url;
