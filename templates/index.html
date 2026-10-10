@@ -56,26 +56,37 @@
       <div class="hero-visual">
         <div class="blob blob--back" aria-hidden="true"></div>
         <div class="blob blob--front">
-          <div class="qr-stage" id="qr-stage">
-            <div class="qr-placeholder" id="qr-placeholder" aria-hidden="true">
+          <div class="qr-stage">
+            <div class="qr-placeholder" aria-hidden="true">
               <span></span><span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span><span></span>
             </div>
-            <img id="qr-image" alt="Generert QR-kode" hidden />
           </div>
-          <a
-            id="download-link"
-            class="pill-btn pill-btn--outline"
-            download="qr-kode.png"
-            hidden
-            >LAST NED PNG</a
-          >
         </div>
       </div>
     </header>
+
+    <dialog id="qr-dialog" class="qr-dialog" aria-label="Din QR-kode">
+      <button
+        type="button"
+        id="dialog-close"
+        class="dialog-close"
+        aria-label="Lukk"
+      >
+        &times;
+      </button>
+      <p class="eyebrow">DIN QR&#8209;KODE</p>
+      <img id="qr-image" class="dialog-image" alt="Generert QR-kode" />
+      <a
+        id="download-link"
+        class="pill-btn pill-btn--solid"
+        download="qr-kode.png"
+        >LAST NED PNG</a
+      >
+    </dialog>
 
     <section class="about" id="om">
       <p class="eyebrow">OM TJENESTEN</p>
@@ -105,8 +116,8 @@
 
     <script>
       const form = document.getElementById("qr-form");
-      const stage = document.getElementById("qr-stage");
-      const placeholder = document.getElementById("qr-placeholder");
+      const dialog = document.getElementById("qr-dialog");
+      const closeButton = document.getElementById("dialog-close");
       const image = document.getElementById("qr-image");
       const downloadLink = document.getElementById("download-link");
       const errorBox = document.getElementById("error");
@@ -152,28 +163,34 @@
         }
 
         if (!isWebsite(data)) {
-          showError("Skriv inn en nettadresse, f.eks. eksempel.no eller eksempel.com.");
+          showError("Skriv inn en gyldig nettadresse");
           return;
         }
 
         const url = `/generate?data=${encodeURIComponent(data)}&ec=${encodeURIComponent(ec)}`;
-        image.src = url;
         downloadLink.href = url;
+        if (image.getAttribute("src") === url && image.naturalWidth > 0) {
+          dialog.showModal();
+        } else {
+          image.src = url;
+        }
       });
 
       image.addEventListener("load", () => {
-        placeholder.hidden = true;
-        image.hidden = false;
-        downloadLink.hidden = false;
+        if (!dialog.open) dialog.showModal();
       });
 
       image.addEventListener("error", () => {
-        placeholder.hidden = false;
-        image.hidden = true;
-        downloadLink.hidden = true;
+        if (dialog.open) dialog.close();
         errorBox.textContent =
           "Klarte ikke å generere QR-koden. Sjekk at teksten ikke er for lang.";
         errorBox.hidden = false;
+      });
+
+      closeButton.addEventListener("click", () => dialog.close());
+
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
       });
     </script>
   </body>
